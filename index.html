@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My AI App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial;
+      background: #111;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    input {
+      width: 70%;
+      padding: 10px;
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    #response {
+      margin-top: 20px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+<h2>My Personal AI</h2>
+
+<input type="text" id="question" placeholder="Ask something..." />
+<br>
+<button onclick="askAI()">Send</button>
+
+<div id="response"></div>
+
+<script>
+async function askAI() {
+  const question = document.getElementById("question").value;
+
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer YOUR_API_KEY"
+    },
+    body: JSON.stringify({
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: question }]
+    })
+  });
+
+  const data = await response.json();
+  document.getElementById("response").innerText =
+    data.choices[0].message.content;
+}
+</script>
+
+</body>
+</html>
